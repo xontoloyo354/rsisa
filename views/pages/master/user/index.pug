@@ -1,0 +1,270 @@
+extends ../../../layouts/main
+include ../../../mixins/forms/inputGroup.pug
+include ../../../mixins/forms/selectGroup.pug
+
+block content
+  .row 
+    .col-sm-12 
+      h2 Master Data User 
+  hr
+  .row
+    .col-sm-12
+      .card 
+        .card-body
+          button.btn.btn-outline-primary.ml-2.px-3.py2#toolbar(
+            onclick="openCreateForm()"
+            ) +
+          table.table-borderless.border-0#userTable
+  #createUserModal.modal.fade(ref='createUserModal', role='dialog', aria-labelledby='createUserModalTitle', aria-hidden='true')
+    .modal-dialog.modal-lg.modal-dialog-centered(role='document')
+      .modal-content
+        .modal-header
+          h3#createUserModalTitle.modal-title Tambah User
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') &times;
+        .modal-body
+          form#userForm.form-group(autocomplete="off")
+            input(type="hidden", name="userId")
+            +inputGroup({ label: 'Nama User', name: 'fullname', type: 'text', required}, '')
+            +selectGroup({ label: 'Direksi', type: "text", name: "department", options: [{value: '1', text: 'Keuangan'}, {value: '2', text: 'Kearsipan'}] }, '')
+            +inputGroup({ label: 'No. WA (Notifikasi WA)', placeholder: "081234567890", name: 'username', type: 'number', required }, '')
+            .form-group
+              label Password
+              .input-group.mb-3
+                input.form-control(type='password', name='password', required)
+                .input-group-append
+                  span#showPassword.input-group-text(onclick="togglePassword(this)")
+                    i.far.fa-eye#passwordIcon
+
+        .modal-footer
+          button.btn.btn-secondary(type='button', onclick="resetForm()", form="userForm") Reset
+          button.btn.btn-primary(type='submit', form="userForm")
+            span Simpan
+
+block scripts
+  script.
+    const $table = $('#userTable')
+    const form = {
+      password: $('input[name="password"]'),
+      fullname: $('input[name="fullname"]'),
+      department: $('select[name="department"]'),
+      username: $('input[name="username"]'),
+    }
+
+    $table.bootstrapTable({
+      url: `./json`,
+      sidePagination: 'server',
+      pageSize: 10,
+      pagination: true,
+      showHeader: false,
+      toolbar: '#toolbar',
+      toolbarAlign: 'right',
+      idField: 'id',
+      uniqueId: 'id',
+      search: true,
+      columns: [
+        [
+          {
+            title: 'Nama',
+            field: 'fullname',
+            align: 'left',
+            formatter: (val, row, i) => {
+              return val + '<br>' + row.username
+            }
+          },
+          {
+            title: '<i class="icon-grid"></i>',
+            field: 'action',
+            align: 'right',
+            cellStyle: function () {
+              return {css: {'padding-right': '0px !important'}}
+              },
+            width: 180,
+            formatter: formatAction
+          },
+        ]
+      ]
+    });
+
+    const validator = $("#userForm").validate({
+        validClass: "success",
+        rules: {
+          fullname: {required: true},
+          password: {
+            required: (el) => {
+              return $('input[name="userId"]').val() ? false : true
+            }
+          },
+          username: {
+            required: true,
+            remote: {
+              url: "./check-username",
+              type: "get",
+              data: {
+                username: () => form.username.val(),
+                userId: () => $('input[name="userId"]').val()
+              }
+            }
+          },
+          department: {required: true},
+        },
+        highlight: function(element) {
+          $(element).closest('.form-group').addClass('has-error');
+          $(element).next().removeClass('d-none')
+        },
+        unhighlight: function(element) {
+          $(element).closest('.form-group').removeClass('has-error');
+          $(element).next().addClass('d-none')
+        },
+        submitHandler: submitHandler
+      })
+
+    function formatAction(val, row, index) {
+      return [
+        '<button type="button" class="edit btn btn-sm btn-warning mr-2 " data-toggle="modal" data-target="#createUserModal" data-id="'+ row.id +'" onclick="openEditForm(this)">Edit</button>',
+        '<button type="button" class="btn btn-sm btn-danger" data-id="'+ row.id +'" onclick="deleteUser(this)">Hapus</button>',
+        ].join('')
+    }
+
+    function resetForm() {
+      $("#userForm").validate().resetForm()
+      $('.form-group').removeClass('has-error')
+      $("#userForm").trigger('reset')
+    }
+
+    function togglePassword () {
+      let isPassword = form.password.attr('type') == 'password'
+      form.password.attr('type', isPassword ? 'text' : 'password')
+      $('#passwordIcon').toggleClass('fa-eye fa-eye-slash')
+    }
+
+    function openCreateForm () {
+      resetForm()
+      $('#userForm').attr('data-action', 'create')
+      $('#createUserModalTitle').text('Tambah User')
+      $('#createUserModal').modal('show')
+    }
+
+    function openEditForm (element) {
+      resetForm()
+      let data = $table.bootstrapTable('getRowByUniqueId', element.dataset.id)
+      for (const [key, value] of Object.entries(form)) {
+        if (key != 'password') {
+          value.val(data[key])
+        }
+      }
+      $('input[name="userId"]').val(data.id)
+      $('#userForm').attr('data-action', 'update')
+      $('#createUserModalTitle').text('Edit User')
+      $('#createUserModal').modal('show')
+    }
+
+    function closeModal () {
+      $('#userForm').attr('data-action', '')
+      $('#createUserModal').modal('hide')
+    }
+
+    function submitHandler() {
+      let action = $('#userForm').data('action')
+      if (action == 'create') {
+        createUser()
+      } else if(action == 'update') {
+        updateUser()
+      }
+    }
+
+    function createUser() {
+      let submitedForm = {
+        _csrf: '#{_csrf}'
+      }
+      for (const [key, value] of Object.entries(form)) {
+        submitedForm[key] = value.val()
+      }
+      axios
+        .post('./create', submitedForm)
+        .then((res) => {
+          swal({
+            title: 'Data Berhasil Dibuat',
+            icon: 'success'
+          })
+          resetForm()
+          closeModal()
+          $table.bootstrapTable('refresh')
+        })
+        .catch((err) => {
+          swal({
+            title: 'Data Gagal Dibuat',
+            icon: 'error',
+            text: err
+          })
+        })
+    }
+
+    function updateUser() {
+      let submitedForm = {
+        _csrf: '#{_csrf}'
+      }
+      for (const [key, value] of Object.entries(form)) {
+        submitedForm[key] = value.val()
+      }
+      let userId = $('input[name="userId"]').val()
+      axios
+        .put(`./${userId}/update`, submitedForm)
+        .then((res) => {
+          swal({
+            title: 'Data Berhasil Diedit',
+            icon: 'success'
+          })
+          resetForm()
+          closeModal()
+          $table.bootstrapTable('refresh')
+        })
+        .catch((err) => {
+          swal({
+            title: 'Data Gagal Dibuat',
+            icon: 'error',
+            text: err
+          })
+        })
+    }
+
+    function deleteUser(element) {
+      swal({
+        title: 'Yakin menghapus data?',
+        text: "Data tidak dapat dipulihkan",
+        type: 'warning',
+        buttons:{
+          confirm: {
+            text : 'Ya, hapus',
+            className : 'btn btn-success'
+          },
+          cancel: {
+            visible: true,
+            text: 'Batal',
+            className: 'btn btn-danger'
+          }
+        }
+      }).then((Delete) => {
+        if (Delete) {
+          axios
+            .delete(`./${element.dataset.id}/delete`)
+            .then((res) => {
+              swal({
+                title: 'Hapus data berhasil',
+                icon: 'success',
+              })
+              .then((Confirm) => {
+                $table.bootstrapTable('refresh')
+              });
+            })
+            .catch((err) => {
+              swal({
+                title: 'Hapus data gagal',
+                icon: 'error',
+              })
+            })
+        } else {
+          swal.close();
+        }
+      });
+    }

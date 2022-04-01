@@ -1,0 +1,17 @@
+ul.breadcrumbs
+  each breadcrumb, index in breadcrumbs
+    if breadcrumb.url === ''
+      li.nav-home
+        a(href='/')
+          i.flaticon-home
+      li.separator
+        i.flaticon-right-arrow
+    else
+      li.nav-item
+        if breadcrumb.last
+          a(href='#')=breadcrumb.name
+        else
+          a(href=breadcrumb.url)=breadcrumb.name
+      if index < breadcrumbs.length - 1
+        li.separator
+          i.flaticon-right-arrow

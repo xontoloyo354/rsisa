@@ -1,0 +1,18 @@
+node_modules/
+# views/assets/js/bundle.js
+.node_modules/
+# dist/
+.env
+
+config/config.json
+logs/
+file/*
+!file/.gitkeep
+file/downloads/*
+!file/downloads/.gitkeep
+# src/file/*
+# !src/file/.gitkeep
+
+# src/file/downloads/*
+# !src/file/downloads/.gitkeep
+# views/assets/js/bundle.js

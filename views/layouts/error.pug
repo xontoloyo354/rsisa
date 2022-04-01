@@ -1,0 +1,34 @@
+mixin error(error=404, message='')
+  doctype html
+  html(lang='en')
+    head
+      meta(http-equiv="X-UA-Compatible" content="IE=edge")
+      title=error
+      meta(content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport')
+      link(rel='icon' href='/assets/images/cektoko.svg')
+
+      link(rel='stylesheet', href='/assets/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/assets/css/atlantis.css')
+
+      script(src='/assets/js/plugin/webfont/webfont.min.js')
+      script.
+        WebFont.load({
+          custom: {"families":["Lato:300,400,700,900", "Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['/assets/css/fonts.min.css']},
+          active: function() {
+              sessionStorage.fonts = true;
+          }
+        });
+      script(src='/assets/js/core/jquery.3.2.1.min.js')
+      script(src='/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js')
+      script(src='/assets/js/core/popper.min.js')
+      script(src='/assets/js/core/bootstrap.min.js')
+    body.page-not-found
+      .wrapper.not-found
+        h1.animated.fadeIn=error
+        .desc.animated.fadeIn
+          span OOPS!
+          br
+          p=message
+        a.btn.btn-primary.btn-back-home.mt-4.animated.fadeInUp(href="/dashboard")
+          .btn-label.mr-2
+            i.flaticon-home &nbsp; Back To Home

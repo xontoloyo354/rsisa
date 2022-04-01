@@ -1,0 +1,35 @@
+a[aria-expanded='true'] .fa-chevron-right {
+  transition: 0.3s transform ease-in-out;
+  transform: rotate(90deg);
+}
+.table-borderlesss > tbody > tr > td,
+.table-borderlesss > tbody > tr > th,
+.table-borderlesss > tfoot > tr > td,
+.table-borderlesss > tfoot > tr > th,
+.table-borderlesss > thead > tr > td,
+.table-borderlesss > thead > tr > th {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+[node-id] rect {
+  fill: #009b4d;
+}
+
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+  border: none;
+}
+
+#menu-payroll {
+  text-decoration: none;
+  color: #2a2f5b;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

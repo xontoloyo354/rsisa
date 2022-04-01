@@ -1,0 +1,31 @@
+extends ../layouts/login
+
+block content
+  .wrapper.wrapper-login
+    .container.container-login
+      img(src='/assets/img/logo-buku-saku.png', style='display: block; margin-left: auto; margin-right: auto; width: 80%;')
+
+      br
+      form(action='/login' method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .login-form
+          .msg.text-danger.text-center
+            for error in errors
+              div=error
+          .form-group.form-floating-label
+            input.form-control.input-border-bottom(required=true name='username' type='text')
+            label.placeholder(for='username') No HP
+          .form-group.form-floating-label
+            input.form-control.input-border-bottom(required=true name='password' type='password')
+            label.placeholder(for='password') Password
+            .show-password
+              i.icon-eye
+          .form-action.mb-3
+            button.btn.btn-primary.btn-lg.btn-block(type='submit') Login
+
+block scripts
+  script(src='/assets/js/core/jquery.3.2.1.min.js')
+  script(src='/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js')
+  script(src='/assets/js/core/popper.min.js')
+  script(src='/assets/js/core/bootstrap.min.js')
+  script(src='/assets/js/atlantis.min.js')

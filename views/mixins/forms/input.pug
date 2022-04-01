@@ -1,0 +1,13 @@
+mixin input({ name, label, placeholder, vmodel, type, required, disabled, hidden, readonly, min }, value)
+  input.form-control(
+    name=name
+    type=type || 'text'
+    v-model=vmodel
+    readonly=readonly
+    required = required ? true : false
+    disabled = disabled ? true : false
+    hidden = hidden ? true : false
+    min=min || ''
+    placeholder=`${placeholder ? placeholder : label}`
+    value=`${value ? (typeof value === 'string' || typeof value === 'number' ? value : (value[name] || '')) : ''}`
+  )

@@ -1,0 +1,10 @@
+mixin appendBtn({name, label, prepend, defaultOld, type, required, placeholder, min})
+  .form-group
+    if (!hidden)
+      label(for=name)=label 
+        if required 
+        span.text-danger *
+    .input-group
+      .input-group-prepend(id=name)
+        .input-group-text(id=`labelPrepend${name}`)=prepend
+      +input({ name: name, type: type || 'text', requiered: required || false, placeholder: placeholder || '', min: min || '' }, (old ? old : defaultOld))

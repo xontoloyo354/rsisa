@@ -1,0 +1,21 @@
+mixin inputGroup({ name, label, placeholder, vmodel, type, required, disabled, hidden, readonly, min, validationMessage }, value)
+  .form-group
+    if (!hidden)
+      label(for=name)=label
+        if required 
+          span.text-danger *
+    input.form-control(
+      id=name
+      name=name
+      type=type || 'text'
+      v-model=vmodel
+      readonly=readonly
+      required = required ? true : false
+      disabled = disabled ? true : false
+      hidden = hidden ? true : false
+      min=min ? min : false
+      placeholder=`${placeholder ? placeholder : label}`
+      value=`${value ? (typeof value === 'string' || typeof value === 'number' ? value : (value[name] || '')) : ''}`
+    )
+    if (validationMessage)
+      small.form-text.text-muted.d-none #{validationMessage}

@@ -1,0 +1,25 @@
+extends ../layouts/main
+
+block content
+  div(id="dashboard")
+    .panel-header.bg-primary-gradient
+      .page-inner.py-5
+        .d-flex.align-items-left.align-items-md-center.flex-column.flex-md-row
+          div
+            h2.text-white.pb-2.fw-bold Master
+    .page-inner
+      .row
+        .col-sm-6.col-lg-3
+          .card.p-3
+            .d-flex
+              span.stamp.stamp-md.bg-warning.mr-3
+                i.fas.fa-envelope
+              div 
+                h5
+                  b=`Surat Masuk`
+
+block scripts
+  script.
+    const dashboard = new Vue({
+      el: "#dashboard",
+    })

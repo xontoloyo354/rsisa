@@ -1,0 +1,15 @@
+nav.navbar.navbar-header.navbar-expand-lg.p-0
+  div.container-fluid.p-0
+    ul.navbar-nav.topbar-nav.ml-md-auto.align-items-center
+      li.nav-item.dropdown.hidden-caret
+        a.dropdown-toggle.profile-pic(data-toggle="dropdown" href="#" aria-expanded="false")
+          .avatar-sm
+            img.avatar-img.rounded-circle(src="/assets/img/profile.jpg")
+        ul.dropdown-menu.dropdown-user.animated.fadeIn
+          div.dropdown-user-scroll.scrollbar-outer
+            li
+              a.dropdown-item(href="/setting") Account Setting
+              .dropdown-divider
+              a.dropdown-item(href="/logout") Logout
+
+script.

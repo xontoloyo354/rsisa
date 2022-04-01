@@ -1,0 +1,10 @@
+mixin selectGroup({ name, label, description, placeholder, options, vmodel, required, hidden, readonly }, value)
+  .form-group
+    if (!hidden)
+      label(for=name)=label 
+        if required 
+          span.text-danger *
+    select.form-control.select2(name=name, id=name, v-model=vmodel, hidden=hidden, readonly=readonly)
+      if options
+        each option in options
+          option(value=option.value selected=(option.value == value))=(option.text || option.value)

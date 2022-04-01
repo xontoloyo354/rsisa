@@ -1,0 +1,25 @@
+.nav-top
+  .container.d-flex.flex-row
+    button.navbar-toggler.sidenav-toggler.ml-auto(type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+        i.icon-menu
+    button.topbar-toggler.more
+      i.icon-options-vertical
+    
+    //- Logo Header
+    a.logo.d-flex.align-items-center(href="#")
+      img.navbar-brand(src="/assets/img/logo.svg" alt="navbar brand")
+
+    //- Navbar Header
+    include ../partials/navbar.pug
+
+.nav-bottom.bg-white
+  h3.title-menu.d-flex.d-lg-none Menu 
+    .close-menu
+      i.flaticon-cross
+  .container.d-flex.flex-row
+    ul.nav.page-navigation.page-navigation-secondary
+      li.nav-item
+        a.nav-link(href="#")
+          i.link-icon.icon-grid
+          span.menu-title Master

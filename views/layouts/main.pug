@@ -1,0 +1,16 @@
+doctype html
+html(lang='en')
+  head
+    include ../partials/head.pug
+    block styles
+  body
+    .wrapper
+      .main-header(data-background-color="purple")
+        include ../partials/header.pug
+      .main-panel
+        .container
+          .page-inner
+            block content
+      include ../partials/footer.pug
+      //- include ../partials/scripts.pug
+      block scripts

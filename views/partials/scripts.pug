@@ -1,0 +1,99 @@
+script.
+  $('input.datepicker').datetimepicker({
+    format: 'DD-MM-YYYY',
+  });
+  //- $('.select2input').select2({ dropdownParent: $('#exampleModalCenter'), theme: "bootstrap"});
+  $('.select2input').select2({ theme: "bootstrap"});
+  $('.btn-delete').click(function(e) {
+    e.preventDefault();
+    var id = $(this).attr("attr-id");
+    swal({
+      title: 'Apakah kamu yakin ingin menghapus data ini',
+      text: "",
+      type: 'warning',
+      buttons:{
+        cancel: {
+          visible: true,
+          text : 'Batal',
+          className: 'btn btn-danger'
+        },
+        confirm: {
+          text : 'Hapus',
+          className : 'btn btn-success'
+        }
+      }
+    }).then((willDelete) => {
+      if (willDelete) {
+        $(`.delete-form-${id}`).submit()
+      } else {
+        swal("Hapus data dibatalkan", {
+          buttons : {
+            confirm : {
+              className: 'btn btn-success'
+            }
+          }
+        });
+      }
+    });
+  });
+  function mountSelect2 (el, binding) {
+    let options = binding.value || {};
+    //- $(el).select2({...options, dropdownParent: $('#exampleModalCenter'), theme: "bootstrap"}).on("select2:select", (e) => {
+    $(el).select2({...options, theme: "bootstrap"}).on("select2:select", (e) => {
+      el.dispatchEvent(new Event('change', { target: e.target }));
+    });
+  }
+  Vue.directive('select2', {
+    inserted: mountSelect2 ,
+    componentUpdated: mountSelect2,
+  });
+  Vue.directive('datepicker', {
+    bind: function (el, binding, vnode, oldVnode) {
+      $(el).datetimepicker({format: 'DD-MM-YYYY'});
+    },
+    inserted: function (el, binding, vnode, oldVnode) {
+      $(el).datetimepicker({ date: new Date(binding.value) });
+    },
+    componentUpdated: function (el, binding, vnode, oldVnode) {
+      $(el).datetimepicker({ date: new Date(binding.value) });
+    },
+    unbind: function (el) {
+      $(el).datetimepicker('destory');
+    }
+  });
+  $(document).ready(function(type){
+    const notification = (type, message) => {
+      var placementFrom = $('#notify_placement_from option:selected').val();
+      var placementAlign = $('#notify_placement_align option:selected').val();
+      var state = type;
+      var style = 'withicon';
+      var content = {};
+
+      content.title = message;
+      content.message = '';
+      if (style == "withicon") {
+        content.icon = 'fa fa-bell';
+      } else {
+        content.icon = 'none';
+      }
+
+      $.notify(content,{
+        type: state,
+        placement: {
+          from: placementFrom,
+          align: 'center'
+        },
+        time: 10,
+        delay: 0,
+      });
+    };
+    if ('#{messages.success}') {
+      notification('success', '#{messages.success}');
+    }
+    if ('#{messages.errors}') {
+      notification('danger', '#{messages.errors}');
+    }
+    if ('#{messages.info}') {
+      notification('info', '#{messages.info}');
+    }
+  });

@@ -1,0 +1,46 @@
+extends ../layouts/main
+
+
+block content
+    .main
+        #title
+            h3#name.m-0(style='font-weight: 700') Yth.dr.Mashudi AM., M.Kes
+            h3#position(style='font-weight: 700') Direktur Utama
+            div(style='border-bottom: 2px solid gray')
+        .icons.d-flex.align-items-center.mt-3.mb-2
+            p.m-0(style='color:#2c88d9; font-size: 18px; font-weight: 600') Surat Masuk()
+        .selected.d-flex.justify-content-between
+            select.custom-select.col-sm-4.col-4.col-lg-4
+                option(selected) Progress
+                option(value="1") Belum Selesai
+                option(value="2") Selesai
+                option(value="3") Segera
+            input(type="date").col-sm-4.col-6.col-lg-2(style="border: 1px solid #ced4da")
+
+        .message#direksi
+            .message-content-direksi.mt-2(style='height: 220px; background-color:#dfe6ed;')
+                .message-head.d-flex.align-items-center.p-3
+                    p#important-letter.mb-0.mr-3.p-1(style='border: 1px solid gray; border-radius: 100px; background-color:#d3455b; color: white; font-weight: 700') Segera
+                    p#letter-date.mb-0 25 Maret 2022
+                .letter-type-message.pl-3
+                    .text-muted.mb-3 Surat Keputusan
+                    #no-message.mb-3(style='font-size:16px') 446/5355/5
+                    #send-from
+                        .p.pb-2 Dari: Sumber Daya Insani
+                        .p Direksi: Direktur Utama
+            .message-content-direksi.mt-2(style='height: 220px; background-color:#dfe6ed;')
+                .message-head.d-flex.align-items-center.p-3
+                    p#regular-letter.mb-0.mr-3.p-1(style='border: 1px solid gray; border-radius: 100px; background-color:#1aae9f; color: white; font-weight: 700') 
+                        |Surat Biasa
+                    p#letter-date.mb-0 25 Maret 2022
+                .letter-type-message.pl-3
+                    .text-muted.mb-3 Surat Keputusan
+                    #no-message.mb-3(style='font-size:16px') 446/5355/5
+                    #send-from
+                        .p.pb-2 Dari: Sumber Daya Insani
+                        .p Direksi: Direktur Utama
+
+            
+
+
+

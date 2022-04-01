@@ -1,0 +1,14 @@
+mixin inputUpperCase({ name, label, placeholder, vmodel, type, required, disabled, hidden, readonly }, value)
+  .form-group
+    label(for=name)=label
+    input.form-control.uppercase(
+      name=name
+      type=type || 'text'
+      v-model=vmodel
+      readonly=readonly
+      required = required ? true : false
+      disabled = disabled ? true : false
+      hidden = hidden ? true : false
+      placeholder=`${placeholder ? placeholder : label}`
+      value=`${value ? (typeof value === 'string' || typeof value === 'number' ? value : (value[name] || '')) : ''}`
+    )
